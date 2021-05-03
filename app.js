@@ -1,6 +1,21 @@
-var age1= 30;
-var age2= '30';
+var express = require ('express');
+var http = require ('http');
+var fs = require ('fs');
 
-var result = age1 === age2;
+var app = express();
+var server = http.createServer(app);
 
-console.log(result);
+app.get('/', function(req,res){
+    res.send ('<h1>Express Works!</h1>')
+});
+
+app.get('/tasks', function(req,res) {
+    fs.readFile('./db.json', function(err,data){
+        var tasks = JSON.parse(data.toString()).tasks;
+        res.send(tasks);
+    })
+});
+
+server.listen(3000, function () {
+    console.log('Server listening on port 3000')
+});
